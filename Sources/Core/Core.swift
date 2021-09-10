@@ -1,8 +1,8 @@
 import Foundation
 import CoreData
 
-class Core {
-    static let shared = Core()
+public class Core {
+    public static let shared = Core()
     private init() { }
     
     var container: NSPersistentContainer = {
@@ -13,20 +13,19 @@ class Core {
     }()
     
     var context: NSManagedObjectContext { container.viewContext }
-    static var context: NSManagedObjectContext {
+    public static var context: NSManagedObjectContext {
         let context: NSManagedObjectContext = .init(concurrencyType: .privateQueueConcurrencyType)
         context.parent = Core.shared.context
         return context
     }
     
-    static func save() {
+    public static func save() {
         if Core.shared.context.hasChanges {
-            do { try Core.shared.context.save()
-            } catch { }
+            save(Core.shared.context)
         }
     }
     
-    static func save(_ context: NSManagedObjectContext) {
+    public static func save(_ context: NSManagedObjectContext) {
         do { try context.save()
         } catch { }
     }
